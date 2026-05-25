@@ -51,8 +51,8 @@ jobs:
         run: docker compose run --rm selenium-tests 
 
 
-        - name: Check reports
-          run: |
+      - name: Check reports
+        run: |
               echo "Checking reports..."
               ls -R reports || true
 
@@ -62,7 +62,7 @@ jobs:
         if: always()
         with:
           name: selenium-reports
-          path: reports/surefire-reports/
+          path: reports/
              
 
       - name: Stop containers
