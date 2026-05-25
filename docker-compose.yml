@@ -36,8 +36,8 @@ services:
       sleep 20 &&
       mvn test &&
       mkdir -p /reports &&
-      cp -r target/surefire-reports /reports/
-      exec sleep infinity
+      cp -r target/surefire-reports/* /reports/
+     
       "
     volumes:
       - ./reports:/reports
