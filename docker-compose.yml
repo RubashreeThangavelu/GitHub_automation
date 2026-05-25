@@ -35,10 +35,12 @@ services:
       echo 'Waiting for Selenium...' &&
       sleep 20 &&
       mvn test &&
+      mkdir -p /reports &&
+      cp -r target/surefire-reports /reports/
       exec sleep infinity
       "
     volumes:
-
+      - ./reports:/reports
       - shared-data:/data
     networks:
       - selenium-grid
