@@ -58,7 +58,7 @@ jobs:
           name: selenium-reports
           path: |
                 target/surefire-reports/
-
+                target/test-output/
 
       - name: Stop containers
         if: always()
