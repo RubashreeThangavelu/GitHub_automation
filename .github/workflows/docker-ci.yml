@@ -34,7 +34,7 @@ jobs:
 
 
       - name: Start containers
-        run: docker compose up -d
+        run: docker compose up -d app firefox mysql-db1
 
       - name: Wait for MySQL
         run: |
@@ -48,7 +48,13 @@ jobs:
           docker compose exec mysql-db1 mysql -uroot -proot -e "USE login_db; SHOW TABLES;"
 
       - name: Run tests
-        run: docker compose run --rm selenium-tests mvn clean test
+        run: docker compose run --rm selenium-tests 
+
+
+        - name: Check reports
+          run: |
+              echo "Checking reports..."
+              ls -R reports || true
 
 
       - name: Upload reports
