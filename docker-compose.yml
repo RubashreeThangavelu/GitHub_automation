@@ -1,0 +1,67 @@
+services:
+
+  app:
+    image: tomcat:10.1
+    container_name: tomcat-app1
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./Docker_backup:/usr/local/tomcat/webapps/Docker_backup
+      - shared-data:/data
+    environment:
+      - TZ=Asia/Kolkata
+    networks:
+      - selenium-grid
+
+  firefox:
+    image: selenium/standalone-firefox:4.18.1
+    container_name: firefox-github
+    shm_size: 2gb
+    ports:
+      - "4444:4444"
+    networks:
+      - selenium-grid
+
+  selenium-tests:
+    build: .
+    container_name: selenium-test-github
+    depends_on:
+      - firefox
+      - app
+    working_dir: /app
+    command: >
+      sh -c "set -e;
+      /init-data.sh &&
+      echo 'Waiting for Selenium...' &&
+      sleep 20 &&
+      mvn test &&
+      mkdir -p /reports &&
+      cp -r target/surefire-reports /reports/
+      exec sleep infinity
+      "
+    volumes:
+      - ./reports:/reports
+      - shared-data:/data
+    networks:
+      - selenium-grid
+
+  mysql-db1:
+    image: mysql:8
+ 
+
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: login_db
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - selenium-grid
+
+volumes:
+  shared-data:
+
+networks:
+  selenium-grid:
+    name: selenium-github
