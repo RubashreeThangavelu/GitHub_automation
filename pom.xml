@@ -57,6 +57,10 @@
             <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
         </suiteXmlFiles>
 
+         <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+        <useFile>true</useFile>
+
+
         <!-- VERY IMPORTANT for Docker + Selenium -->
         <forkCount>1</forkCount>
         <reuseForks>false</reuseForks>
